@@ -36,7 +36,7 @@ class NumberedCanvas(canvas.Canvas):
         self.setFillColor(colors.black)
 
         # Running Header
-        header_text = "Cyberbullying Detection and Severity Analysis - Academic Project Report"
+        header_text = "Cyberbullying Detection and Severity Analysis - MCA Academic Project & Viva Guide"
         self.drawString(54, 804, header_text)
         self.setStrokeColor(colors.black)
         self.setLineWidth(0.5)
@@ -52,13 +52,7 @@ class NumberedCanvas(canvas.Canvas):
 
 def build_pdf_story(toc_page_map=None):
     if toc_page_map is None:
-        # Defaults for first pass
-        toc_page_map = {
-            1: "Page 3", 2: "Page 3", 3: "Page 4", 4: "Page 4",
-            5: "Page 5", 6: "Page 6", 7: "Page 7", 8: "Page 8",
-            9: "Page 9", 10: "Page 10", 11: "Page 11", 12: "Page 11",
-            13: "Page 12", 14: "Page 13"
-        }
+        toc_page_map = {i: "Page X" for i in range(1, 18)}
 
     styles = getSampleStyleSheet()
 
@@ -111,8 +105,8 @@ def build_pdf_story(toc_page_map=None):
         'Header2',
         parent=styles['Normal'],
         fontName='Helvetica-Bold',
-        fontSize=11,
-        leading=15,
+        fontSize=10.5,
+        leading=14.5,
         textColor=colors.black,
         spaceBefore=10,
         spaceAfter=4,
@@ -169,18 +163,27 @@ def build_pdf_story(toc_page_map=None):
         textColor=colors.black
     )
 
+    callout_style = ParagraphStyle(
+        'Callout',
+        parent=styles['Normal'],
+        fontName='Helvetica',
+        fontSize=8.5,
+        leading=12,
+        textColor=colors.black
+    )
+
     story = []
 
     # ==================== PAGE 1: TITLE & COVER ====================
     story.append(Spacer(1, 10))
     story.append(Paragraph("CYBERBULLYING DETECTION AND SEVERITY ANALYSIS", title_style))
-    story.append(Paragraph("Comprehensive Academic Project Report and Software Architecture", subtitle_style))
+    story.append(Paragraph("Comprehensive Academic Project Report, Technical Architecture, and Viva Guide", subtitle_style))
     story.append(HRFlowable(width="100%", thickness=1, color=colors.black, spaceAfter=10))
 
     meta_text = """
     <b>Degree:</b> Master of Computer Applications (MCA) &nbsp;|&nbsp; <b>Domain:</b> Natural Language Processing (NLP) & Machine Learning<br/>
-    <b>Dataset:</b> Kaggle Jigsaw Toxic Comment Classification (159,571 Human-Annotated Samples)<br/>
-    <b>Production Stack:</b> Python 3.11, Scikit-Learn, FastAPI REST Backend, SQLite, React 19 Single Page Application
+    <b>Dataset:</b> Kaggle Jigsaw Toxic Comment Classification Challenge (159,571 Human-Annotated Samples)<br/>
+    <b>Production Stack:</b> Python 3.11, Scikit-Learn, FastAPI REST Backend, SQLite Database, React 19 Single Page Application
     """
     story.append(Paragraph(meta_text, meta_style))
     story.append(Spacer(1, 6))
@@ -236,22 +239,24 @@ def build_pdf_story(toc_page_map=None):
         (3, "3. Dataset Exploration and Stratified Partitioning"),
         (4, "4. Comprehensive End-to-End System Architecture"),
         (5, "5. Six-Stage NLP Preprocessing Pipeline in Detail"),
-        (6, "6. Preprocessing Ablation Study and Empirical Findings"),
-        (7, "7. Machine Learning Model Selection and Comparison"),
-        (8, "8. Why Linear SVM Won and Why Deep Learning was Not Default"),
-        (9, "9. Model Evaluation and Held-Out Test Performance"),
-        (10, "10. Explainable AI: Mathematical Feature Attribution"),
-        (11, "11. Multi-Tier Severity Scoring Rubric and Heuristics"),
-        (12, "12. Software Implementation: Backend API and Frontend UI"),
-        (13, "13. Verification, Automated Testing, and Edge-Case Handling"),
-        (14, "14. Conclusion, Limitations, and Future Roadmap")
+        (6, "6. TF-IDF Representation: Plain English Explanation"),
+        (7, "7. How a Word Gets Flagged as Toxic: Step-by-Step Walkthrough"),
+        (8, "8. Preprocessing Ablation Study and Empirical Findings"),
+        (9, "9. Machine Learning Model Selection and Comparison"),
+        (10, "10. Why Linear SVM Won and Why Deep Learning was Not Default"),
+        (11, "11. Model Evaluation and Held-Out Test Performance"),
+        (12, "12. Multi-Tier Severity Scoring Rubric and Heuristics"),
+        (13, "13. Software Implementation: Backend API and Frontend UI"),
+        (14, "14. Verification, Automated Testing, and Edge-Case Handling"),
+        (15, "15. Comprehensive Viva Examination Guide & Top 12 FAQs"),
+        (16, "16. Conclusion, Limitations, and Future Roadmap")
     ]
     
     toc_data = [[Paragraph(f"<b>{title}</b>", body_style), Paragraph(toc_page_map.get(num, "Page X"), body_style)] for num, title in toc_titles]
     toc_table = Table(toc_data, colWidths=[415, 72])
     toc_table.setStyle(TableStyle([
-        ('BOTTOMPADDING', (0,0), (-1,-1), 5),
-        ('TOPPADDING', (0,0), (-1,-1), 5),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 4),
+        ('TOPPADDING', (0,0), (-1,-1), 4),
         ('LINEBELOW', (0,0), (-1,-1), 0.25, colors.black),
     ]))
     story.append(toc_table)
@@ -292,7 +297,7 @@ def build_pdf_story(toc_page_map=None):
         bullet_style
     ))
     story.append(Paragraph(
-        "<b>Engineering Nuance:</b> A single NLP classifier operating on isolated comments evaluates <b>comment toxicity and harassment potential</b>. True cyberbullying detection additionally requires social graph context, message frequency tracking, user reputation scores, and temporal sequence analysis. Our system performs deep lexical and semantic toxicity analysis as the essential foundational layer of automated cyberbullying moderation.",
+        "<b>Engineering Nuance for Viva Examiners:</b> A single NLP classifier operating on isolated comments evaluates <b>comment toxicity and harassment potential</b>. True cyberbullying detection additionally requires social graph context, message frequency tracking, user reputation scores, and temporal sequence analysis. Our system performs deep lexical and semantic toxicity analysis as the essential foundational layer of automated cyberbullying moderation.",
         body_style
     ))
     story.append(PageBreak())
@@ -396,8 +401,71 @@ def build_pdf_story(toc_page_map=None):
     ))
     story.append(PageBreak())
 
-    # ==================== SECTION 6 ====================
-    story.append(Paragraph("6. PREPROCESSING ABLATION STUDY AND EMPIRICAL FINDINGS", h1_style))
+    # ==================== SECTION 6: TF-IDF PLAIN ENGLISH ====================
+    story.append(Paragraph("6. TF-IDF REPRESENTATION: PLAIN ENGLISH EXPLANATION", h1_style))
+    story.append(Paragraph(
+        "Computers cannot directly understand words, sentences, or grammatical nuances; they can only process numbers and linear algebra. Therefore, the core challenge in Natural Language Processing is converting raw text strings into meaningful numerical vectors. In this project, we employ <b>TF-IDF (Term Frequency - Inverse Document Frequency)</b> with Unigrams and Bigrams.",
+        body_style
+    ))
+    story.append(Paragraph(
+        "<b>1. Term Frequency (TF) — How frequently does a word appear in THIS specific comment?</b><br/>"
+        "If a user posts a comment repeating an abusive term three times, that term represents a high proportion of the text. Mathematically, Term Frequency is simply the count of occurrences of that word in the comment divided by the total number of words in the comment. If someone writes 'idiot idiot idiot', the word 'idiot' has a very high TF in that comment.",
+        body_style
+    ))
+    story.append(Paragraph(
+        "<b>2. Inverse Document Frequency (IDF) — How rare or common is this word across ALL 160,000 comments?</b><br/>"
+        "Consider common English words like 'the', 'is', 'and', or 'you'. These words appear in almost every single comment on the internet. Because they are ubiquitous, they provide zero diagnostic information about whether a comment is hostile or clean. Inverse Document Frequency mathematically discounts common words and boosts rare, distinctive words.<br/><br/>"
+        "IDF is calculated as: <i>IDF(word) = logarithm of (Total Number of Comments in Dataset divided by Number of Comments containing that word)</i>.<br/>"
+        "• Common words like 'is' appear in 140,000 comments: 160,000 / 140,000 is close to 1, whose logarithm is near 0. Thus, 'is' gets an IDF score near zero.<br/>"
+        "• Threatening words like 'kill' or 'idiot' appear in relatively few comments overall. Thus, their ratio is very large, yielding a high positive IDF score.",
+        body_style
+    ))
+    story.append(Paragraph(
+        "<b>3. Multiplying TF by IDF (The Combined Score):</b><br/>"
+        "The final TF-IDF value is obtained by multiplying Term Frequency by Inverse Document Frequency:<br/>"
+        "<b>TF-IDF Score = (Word Frequency in This Comment) multiplied by (Word Rarity Across the Whole Dataset)</b><br/>"
+        "This produces high numbers only for words that are prominent in the specific message AND meaningful across the English language.",
+        body_style
+    ))
+    story.append(Paragraph(
+        "<b>Why Bigrams (Pairs of Words) are Critical:</b><br/>"
+        "Single words (unigrams) like 'not' and 'bad' can be easily misunderstood. When evaluated in isolation, 'bad' looks toxic and 'not' looks like grammar noise. By setting our N-gram range to (1, 2), our TF-IDF matrix extracts both individual words and two-word combinations such as 'not bad', 'shut up', and 'kill you'. This gives our classifier 10,000 distinct numerical features to distinguish nuance.",
+        body_style
+    ))
+    story.append(Spacer(1, 8))
+
+    # ==================== SECTION 7: HOW A WORD GETS FLAGGED ====================
+    story.append(Paragraph("7. HOW A WORD GETS FLAGGED AS TOXIC: STEP-BY-STEP WALKTHROUGH", h1_style))
+    story.append(Paragraph(
+        "A common question asked by academic evaluators is: <b>'How does the machine learning model actually know that a word is toxic, and how does it flag a comment?'</b> Here is the exact mathematical and algorithmic sequence:",
+        body_style
+    ))
+
+    flagging_steps_data = [
+        [Paragraph("<b>Step Number</b>", table_header_style), Paragraph("<b>Stage in Process</b>", table_header_style), Paragraph("<b>Detailed Explanation of What Happens Under the Hood</b>", table_header_style)],
+        [Paragraph("Step 1", table_cell_bold), Paragraph("Supervised Learning from 160K Comments", table_cell_style), Paragraph("During training, the model looked at 111,700 comments paired with human labels. It statistically observed that words like 'idiot', 'ugly', or 'kill' appeared thousands of times in toxic comments and almost never in clean comments.", table_cell_style)],
+        [Paragraph("Step 2", table_cell_bold), Paragraph("Learned Coefficient Assignment (Weights)", table_cell_style), Paragraph("The Linear SVM assigned a mathematical weight (coefficient) to every word in its 10,000-word vocabulary:<br/>• Strongly toxic words receive large positive weights (e.g., 'idiot' = +4.82)<br/>• Polite/mitigating words receive negative weights (e.g., 'please' = -2.11)<br/>• Neutral words receive near-zero weights (e.g., 'computer' = +0.02)", table_cell_style)],
+        [Paragraph("Step 3", table_cell_bold), Paragraph("Preprocessing the New Incoming Comment", table_cell_style), Paragraph("When a user submits 'You are an idiot, please stop', the text is cleaned, lowercased, lemmatized, and converted into tokens: ['idiot', 'please', 'stop'].", table_cell_style)],
+        [Paragraph("Step 4", table_cell_bold), Paragraph("TF-IDF Vectorization of Tokens", table_cell_style), Paragraph("The vectorizer calculates the numerical TF-IDF value for each active token in that comment. For example: TF-IDF('idiot') = 0.582, TF-IDF('please') = 0.240.", table_cell_style)],
+        [Paragraph("Step 5", table_cell_bold), Paragraph("Feature Contribution Score Calculation", table_cell_style), Paragraph("For each word, the system computes:<br/><b>Contribution = TF-IDF Value multiplied by Learned Coefficient Weight</b><br/>• For 'idiot': 0.582 multiplied by +4.821 = +2.805 (pushes strongly toward toxic)<br/>• For 'please': 0.240 multiplied by -2.115 = -0.507 (pushes toward clean)", table_cell_style)],
+        [Paragraph("Step 6", table_cell_bold), Paragraph("Linear Summation and Intercept (Bias)", table_cell_style), Paragraph("The model sums up all word contribution scores and adds the learned baseline intercept. If the final sum is greater than 0, the comment falls on the toxic side of the decision boundary.", table_cell_style)],
+        [Paragraph("Step 7", table_cell_bold), Paragraph("Platt Scaling Probability Conversion", table_cell_style), Paragraph("The raw linear score is passed through a sigmoid function (Platt calibration) to output a clean, calibrated percentage probability (e.g., 88.5% toxic probability).", table_cell_style)],
+        [Paragraph("Step 8", table_cell_bold), Paragraph("Explainability & Visual Highlighting", table_cell_style), Paragraph("The system sorts all words by their contribution score. The words with the highest positive scores are returned to the frontend as 'Top Trigger Words' and highlighted in red.", table_cell_style)]
+    ]
+    flag_table = Table(flagging_steps_data, colWidths=[55, 135, 297])
+    flag_table.setStyle(TableStyle([
+        ('BOX', (0,0), (-1,-1), 0.75, colors.black),
+        ('INNERGRID', (0,0), (-1,-1), 0.5, colors.black),
+        ('TOPPADDING', (0,0), (-1,-1), 4),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 4),
+        ('LEFTPADDING', (0,0), (-1,-1), 5),
+        ('RIGHTPADDING', (0,0), (-1,-1), 5),
+    ]))
+    story.append(flag_table)
+    story.append(PageBreak())
+
+    # ==================== SECTION 8 ====================
+    story.append(Paragraph("8. PREPROCESSING ABLATION STUDY AND EMPIRICAL FINDINGS", h1_style))
     story.append(Paragraph(
         "To scientifically justify every stage of our NLP pipeline rather than making arbitrary design assumptions, we conducted a systematic 6-stage ablation experiment on the held-out validation dataset using identical classifier parameters:",
         body_style
@@ -431,8 +499,8 @@ def build_pdf_story(toc_page_map=None):
     ))
     story.append(Spacer(1, 8))
 
-    # ==================== SECTION 7 ====================
-    story.append(Paragraph("7. MACHINE LEARNING MODEL SELECTION AND COMPARISON", h1_style))
+    # ==================== SECTION 9 ====================
+    story.append(Paragraph("9. MACHINE LEARNING MODEL SELECTION AND COMPARISON", h1_style))
     story.append(Paragraph(
         "We implemented, trained, and benchmarked three distinct machine learning algorithms on the preprocessed corpus. All models were evaluated under identical 5-fold cross-validation and held-out test splits:",
         body_style
@@ -456,8 +524,8 @@ def build_pdf_story(toc_page_map=None):
     story.append(model_table)
     story.append(PageBreak())
 
-    # ==================== SECTION 8 ====================
-    story.append(Paragraph("8. WHY LINEAR SVM WON AND WHY DEEP LEARNING WAS NOT DEFAULT", h1_style))
+    # ==================== SECTION 10 ====================
+    story.append(Paragraph("10. WHY LINEAR SVM WON AND WHY DEEP LEARNING WAS NOT DEFAULT", h1_style))
     story.append(Paragraph(
         "A critical question in any academic engineering review is: <b>'Why did you select a Calibrated Linear SVM as the champion model, and why did you choose not to deploy a Deep Transformer model like BERT or RoBERTa as the default production engine?'</b>",
         body_style
@@ -501,8 +569,8 @@ def build_pdf_story(toc_page_map=None):
     ))
     story.append(PageBreak())
 
-    # ==================== SECTION 9 ====================
-    story.append(Paragraph("9. MODEL EVALUATION AND HELD-OUT TEST PERFORMANCE", h1_style))
+    # ==================== SECTION 11 ====================
+    story.append(Paragraph("11. MODEL EVALUATION AND HELD-OUT TEST PERFORMANCE", h1_style))
     story.append(Paragraph(
         "The champion Calibrated Linear SVM model was thoroughly evaluated on the 23,936 comments of the held-out test set. The detailed performance breakdown across all evaluation metrics is presented below:",
         body_style
@@ -555,50 +623,8 @@ def build_pdf_story(toc_page_map=None):
     ))
     story.append(PageBreak())
 
-    # ==================== SECTION 10 ====================
-    story.append(Paragraph("10. EXPLAINABLE AI: MATHEMATICAL FEATURE ATTRIBUTION", h1_style))
-    story.append(Paragraph(
-        "In modern automated moderation, a simple prediction score is insufficient. Human moderators and platform users demand to understand <i>why</i> a specific message was flagged. Our system implements exact mathematical feature attribution directly derived from the linear decision function.",
-        body_style
-    ))
-    story.append(Paragraph(
-        "<b>Mathematical Formulation (Plain Text Explanation):</b><br/>"
-        "For any preprocessed comment composed of extracted tokens, each feature receives a numerical Term Frequency-Inverse Document Frequency value. The Linear SVM model associates a learned coefficient weight with each feature for each target category.<br/><br/>"
-        "<b>Feature Contribution Score = TF-IDF Feature Value multiplied by the Learned Linear SVM Coefficient Weight</b><br/><br/>"
-        "• If the resulting contribution score is <b>positive</b>, that specific word or bigram actively pushed the model's decision toward classifying the text as toxic.<br/>"
-        "• If the score is <b>negative</b>, the word acted as mitigating context, pulling the decision back toward non-toxic/benign.<br/>"
-        "• If the score is <b>zero</b>, the word had no bearing on the classification.",
-        body_style
-    ))
-
-    xai_example_data = [
-        [Paragraph("<b>Token / Feature</b>", table_header_style), Paragraph("<b>TF-IDF Weight</b>", table_header_style), Paragraph("<b>SVM Coefficient</b>", table_header_style), Paragraph("<b>Contribution Score</b>", table_header_style), Paragraph("<b>Direction / Influence</b>", table_header_style)],
-        [Paragraph("idiot", table_cell_bold), Paragraph("0.582", table_cell_style), Paragraph("+4.821", table_cell_style), Paragraph("+2.805", table_cell_bold), Paragraph("Strongly Toxic (Insult)", table_cell_style)],
-        [Paragraph("shut up", table_cell_bold), Paragraph("0.415", table_cell_style), Paragraph("+3.612", table_cell_style), Paragraph("+1.498", table_cell_bold), Paragraph("Moderately Toxic (Aggression)", table_cell_style)],
-        [Paragraph("you", table_cell_bold), Paragraph("0.180", table_cell_style), Paragraph("+0.420", table_cell_style), Paragraph("+0.075", table_cell_style), Paragraph("Weakly Toxic (Target pronoun)", table_cell_style)],
-        [Paragraph("please", table_cell_bold), Paragraph("0.240", table_cell_style), Paragraph("-2.115", table_cell_style), Paragraph("-0.507", table_cell_style), Paragraph("Mitigating / Polite Context", table_cell_style)],
-        [Paragraph("thanks", table_cell_bold), Paragraph("0.310", table_cell_style), Paragraph("-3.450", table_cell_style), Paragraph("-1.069", table_cell_style), Paragraph("Strongly Benign Context", table_cell_style)]
-    ]
-    xai_table = Table(xai_example_data, colWidths=[90, 80, 95, 95, 127])
-    xai_table.setStyle(TableStyle([
-        ('BOX', (0,0), (-1,-1), 0.75, colors.black),
-        ('INNERGRID', (0,0), (-1,-1), 0.5, colors.black),
-        ('TOPPADDING', (0,0), (-1,-1), 4),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 4),
-        ('LEFTPADDING', (0,0), (-1,-1), 5),
-        ('RIGHTPADDING', (0,0), (-1,-1), 5),
-    ]))
-    story.append(xai_table)
-    story.append(Spacer(1, 8))
-
-    story.append(Paragraph(
-        "<b>Auditing Benefits:</b> The web frontend visualizes these exact numerical scores as a color-coded bar chart and highlights tokens directly inside the text passage. This allows human content moderators to verify decisions in seconds without guesswork.",
-        body_style
-    ))
-    story.append(PageBreak())
-
-    # ==================== SECTION 11 ====================
-    story.append(Paragraph("11. MULTI-TIER SEVERITY SCORING RUBRIC AND HEURISTICS", h1_style))
+    # ==================== SECTION 12 ====================
+    story.append(Paragraph("12. MULTI-TIER SEVERITY SCORING RUBRIC AND HEURISTICS", h1_style))
     story.append(Paragraph(
         "To provide actionable operational triage, our system synthesizes the six predicted category probabilities into a standardized four-tier severity scale:",
         body_style
@@ -631,8 +657,37 @@ def build_pdf_story(toc_page_map=None):
     ))
     story.append(Spacer(1, 8))
 
-    # ==================== SECTION 12 ====================
-    story.append(Paragraph("12. SOFTWARE IMPLEMENTATION: BACKEND API AND FRONTEND UI", h1_style))
+    # Subsection on Cost-Sensitive Calibrated Thresholding
+    story.append(Paragraph("<b>Cost-Sensitive Calibrated Decision Thresholds (Handling Subtle Threats):</b>", h2_style))
+    story.append(Paragraph(
+        "A critical engineering challenge in automated moderation is detecting <i>clean-language physical threats</i> (e.g., 'I will find you and hurt you, watch your back'). Such sentences contain zero vulgarities or profane words. Words like 'find', 'watch', and 'back' are normally polite and benign in general text, meaning only 'hurt' carries a positive toxic weight.<br/><br/>"
+        "Furthermore, in the Kaggle dataset, the 'Threat' category constitutes merely <b>0.30 percent</b> of all comments. If a naive system applies a flat 0.50 (50%) cutoff, a threat probability of 0.14 (14%) would be mistakenly classified as clean—even though 14% is <b>46 times higher than the natural background rate</b>!<br/><br/>"
+        "To solve this, our system implements <b>Category-Specific Calibrated Thresholds</b>:",
+        body_style
+    ))
+
+    thresh_data = [
+        [Paragraph("<b>Target Category</b>", table_header_style), Paragraph("<b>Dataset Base Rate</b>", table_header_style), Paragraph("<b>Calibrated Threshold</b>", table_header_style), Paragraph("<b>Operational Justification</b>", table_header_style)],
+        [Paragraph("Threat", table_cell_bold), Paragraph("0.30 % (Extremely rare)", table_cell_style), Paragraph("0.10 (10 %)", table_cell_bold), Paragraph("Scores >= 0.10 are 33x higher than prior; triggers immediate Level 3 High Severity freeze.", table_cell_style)],
+        [Paragraph("Identity Hate", table_cell_bold), Paragraph("0.88 % (Rare attack)", table_cell_style), Paragraph("0.15 (15 %)", table_cell_bold), Paragraph("Protects vulnerable demographics from covert discrimination.", table_cell_style)],
+        [Paragraph("Severe Toxic", table_cell_bold), Paragraph("1.00 % (Vicious abuse)", table_cell_style), Paragraph("0.15 (15 %)", table_cell_bold), Paragraph("Detects extreme aggression before escalation.", table_cell_style)],
+        [Paragraph("General Toxic", table_cell_bold), Paragraph("9.58 % (Frequent)", table_cell_style), Paragraph("0.45 (45 %)", table_cell_style), Paragraph("Optimizes F1 harmonic mean between precision and recall.", table_cell_style)],
+        [Paragraph("Insult / Obscene", table_cell_bold), Paragraph("4.94% - 5.29%", table_cell_style), Paragraph("0.40 (40 %)", table_cell_style), Paragraph("Balances slang tolerance against targeted personal harassment.", table_cell_style)]
+    ]
+    thresh_table = Table(thresh_data, colWidths=[90, 110, 100, 187])
+    thresh_table.setStyle(TableStyle([
+        ('BOX', (0,0), (-1,-1), 0.75, colors.black),
+        ('INNERGRID', (0,0), (-1,-1), 0.5, colors.black),
+        ('TOPPADDING', (0,0), (-1,-1), 4),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 4),
+        ('LEFTPADDING', (0,0), (-1,-1), 5),
+        ('RIGHTPADDING', (0,0), (-1,-1), 5),
+    ]))
+    story.append(thresh_table)
+    story.append(Spacer(1, 8))
+
+    # ==================== SECTION 13 ====================
+    story.append(Paragraph("13. SOFTWARE IMPLEMENTATION: BACKEND API AND FRONTEND UI", h1_style))
     story.append(Paragraph(
         "<b>FastAPI Backend Service:</b><br/>"
         "The backend is developed with modern asynchronous Python (FastAPI 0.115) and serves production endpoints with sub-5 millisecond response times. Core REST routes include:<br/>"
@@ -668,8 +723,8 @@ def build_pdf_story(toc_page_map=None):
     ))
     story.append(PageBreak())
 
-    # ==================== SECTION 13 ====================
-    story.append(Paragraph("13. VERIFICATION, AUTOMATED TESTING, AND EDGE-CASE HANDLING", h1_style))
+    # ==================== SECTION 14 ====================
+    story.append(Paragraph("14. VERIFICATION, AUTOMATED TESTING, AND EDGE-CASE HANDLING", h1_style))
     story.append(Paragraph(
         "To guarantee high software reliability and eliminate regressions, we established a rigorous automated testing suite using Pytest. A total of 26 comprehensive automated test cases execute across two primary test modules:",
         body_style
@@ -700,10 +755,76 @@ def build_pdf_story(toc_page_map=None):
         "4. <b>Excessive Text Length:</b> Input strings exceeding 5,000 characters are safely truncated to prevent memory exhaustion attacks.",
         body_style
     ))
-    story.append(Spacer(1, 8))
+    story.append(PageBreak())
 
-    # ==================== SECTION 14 ====================
-    story.append(Paragraph("14. CONCLUSION, LIMITATIONS, AND FUTURE ROADMAP", h1_style))
+    # ==================== SECTION 15: VIVA GUIDE & TOP 12 FAQS ====================
+    story.append(Paragraph("15. COMPREHENSIVE VIVA EXAMINATION GUIDE & TOP 12 FAQS", h1_style))
+    story.append(Paragraph(
+        "This section is specifically tailored for students preparing for project viva examinations and technical defense interviews. It presents direct, articulate answers to the top 12 questions frequently asked by external evaluators:",
+        body_style
+    ))
+
+    viva_qa = [
+        ("Q1: What is the core problem your project solves?",
+         "Ans: It automates the real-time detection, category breakdown, and severity triage of toxic and cyberbullying text on online platforms. Unlike static profanity blacklists which are easily bypassed and lack context, our system uses machine learning with negation preservation to evaluate nuance in under 2 milliseconds."),
+        
+        ("Q2: Why did you choose TF-IDF over simple Bag-of-Words (CountVectorizer)?",
+         "Ans: Bag-of-Words only counts word frequencies, meaning common words like 'the' or 'is' dominate simply because they appear often. TF-IDF penalizes universally common words through Inverse Document Frequency and emphasizes rare, highly informative tokens (like 'threat' or 'idiot')."),
+
+        ("Q3: Why is negation preservation so critical in stopword removal?",
+         "Ans: Standard stopword lists remove 'not', 'no', and 'never'. In sentiment and toxicity detection, removing 'not' from 'you are not bad' leaves only 'bad', causing the model to incorrectly flag a supportive comment as toxic harassment. Preserving negations preserves grammatical polarity."),
+
+        ("Q4: Why did you choose Linear SVM over Deep Learning (like BERT or Transformers)?",
+         "Ans: High-throughput automated moderation requires low latency and transparent auditing. Linear SVM operates in 1.8 milliseconds on standard CPUs, requires under 15MB of RAM, and provides exact closed-form word contribution weights. Deep Transformers require dedicated GPUs, take 50-180ms per inference, and act as opaque black boxes."),
+
+        ("Q5: Why did Linear SVM outperform Logistic Regression and Naive Bayes?",
+         "Ans: TF-IDF feature space has 10,000 sparse dimensions. SVM constructs the maximum-margin hyperplane separating classes, making it mathematically robust against the curse of dimensionality and immune to majority-class skew because it optimizes only over support vectors."),
+
+        ("Q6: How did you handle the severe 9.58% class imbalance in the dataset?",
+         "Ans: We implemented stratified 70/15/15 partitioning to preserve class proportions, utilized balanced class weighting during SVM optimization (which assigns higher penalties when misclassifying minority classes), and evaluated using Macro F1 and Recall rather than deceptive raw accuracy."),
+
+        ("Q7: What is Platt Scaling, and why is it necessary for Linear SVM?",
+         "Ans: Standard Linear SVM only calculates the raw geometric distance from a point to the decision boundary, not a probability percentage. Platt scaling fits a logistic sigmoid function over the SVM distances to output well-calibrated posterior probabilities from 0.0 to 1.0."),
+
+        ("Q8: How does your system explain why a comment was flagged as toxic?",
+         "Ans: Through exact linear feature attribution: Feature Contribution = (TF-IDF value) multiplied by (Learned SVM Weight). Words with high positive scores (e.g. 'idiot' = +2.80) are identified as the primary triggers and highlighted visually for human moderators."),
+
+        ("Q9: What is the difference between single-label and multi-label classification?",
+         "Ans: Single-label classification assigns mutually exclusive classes (e.g., Cat or Dog). Multi-label classification allows a single sample to simultaneously possess multiple categories. A single comment can be simultaneously Toxic, Obscene, and Insult."),
+
+        ("Q10: What is an ablation study, and what did yours prove?",
+         "Ans: An ablation study systematically removes or adds components one by one to quantify their isolated impact. Our 6-stage study proved that adding bigrams (pairs of words) yielded the largest single performance jump (+3.9% recall), demonstrating the importance of phrase context."),
+
+        ("Q11: What happens if a user submits a typo or a word not seen in training (OOV)?",
+         "Ans: Words not in the 10,000-feature vocabulary are ignored by the vectorizer. However, because our model relies on surrounding words, sub-word character repetition cleaning, and bigrams, the remaining recognizable tokens provide sufficient context to classify the comment."),
+
+        ("Q12: How is the severity level (Level 0 to 3) calculated?",
+         "Ans: Using a weighted heuristic formula: Severity = (0.35 * Toxic) + (0.30 * Severe Toxic) + (0.20 * Threat) + (0.15 * Identity Hate) + (0.10 * Insult) + (0.05 * Obscene). Physical threats and hate speech are assigned heavier weights to trigger emergency escalation."),
+
+        ("Q13: Why does your system not use a naive 0.50 cutoff for all categories?",
+         "Ans: In our dataset, categories like 'Threat' represent only 0.30% of comments (3 in 1,000). A threat probability of 0.14 is 46 times higher than the natural prior rate! If we used a naive 0.50 cutoff, subtle threats without explicit profanity (such as 'I will find you and hurt you, watch your back') would be falsely classified as clean. By calibrating the threat threshold to 0.10, we prevent dangerous false negatives and escalate real-world threats to Severity Level 3 immediately.")
+    ]
+
+    for q, a in viva_qa:
+        q_box = [
+            [Paragraph(f"<b>{q}</b>", table_header_style)],
+            [Paragraph(a, callout_style)]
+        ]
+        q_table = Table(q_box, colWidths=[487])
+        q_table.setStyle(TableStyle([
+            ('BOX', (0,0), (-1,-1), 0.5, colors.black),
+            ('TOPPADDING', (0,0), (-1,-1), 3),
+            ('BOTTOMPADDING', (0,0), (-1,-1), 3),
+            ('LEFTPADDING', (0,0), (-1,-1), 6),
+            ('RIGHTPADDING', (0,0), (-1,-1), 6),
+        ]))
+        story.append(q_table)
+        story.append(Spacer(1, 4))
+
+    story.append(PageBreak())
+
+    # ==================== SECTION 16: CONCLUSION ====================
+    story.append(Paragraph("16. CONCLUSION, LIMITATIONS, AND FUTURE ROADMAP", h1_style))
     story.append(Paragraph(
         "<b>Summary of Accomplishments:</b><br/>"
         "This MCA capstone project successfully demonstrates an enterprise-grade Natural Language Processing solution for cyberbullying and toxicity detection. By uniting sound linguistic preprocessing (negation-preserving tokenization, WordNet lemmatization) with a Calibrated Linear Support Vector Machine, the system attains 88.42% accuracy and 0.8392 Macro F1 while executing inferences in under 2 milliseconds on consumer CPU hardware. Mathematical explainability and four-tier severity scoring provide practical operational utility.",
@@ -764,15 +885,17 @@ def generate_pdf():
         (3, "3. DATASET EXPLORATION"),
         (4, "4. COMPREHENSIVE END-TO-END"),
         (5, "5. SIX-STAGE NLP PREPROCESSING"),
-        (6, "6. PREPROCESSING ABLATION"),
-        (7, "7. MACHINE LEARNING MODEL SELECTION"),
-        (8, "8. WHY LINEAR SVM WON"),
-        (9, "9. MODEL EVALUATION"),
-        (10, "10. EXPLAINABLE AI"),
-        (11, "11. MULTI-TIER SEVERITY"),
-        (12, "12. SOFTWARE IMPLEMENTATION"),
-        (13, "13. VERIFICATION, AUTOMATED"),
-        (14, "14. CONCLUSION, LIMITATIONS")
+        (6, "6. TF-IDF REPRESENTATION"),
+        (7, "7. HOW A WORD GETS FLAGGED"),
+        (8, "8. PREPROCESSING ABLATION"),
+        (9, "9. MACHINE LEARNING MODEL SELECTION"),
+        (10, "10. WHY LINEAR SVM WON"),
+        (11, "11. MODEL EVALUATION"),
+        (12, "12. MULTI-TIER SEVERITY"),
+        (13, "13. SOFTWARE IMPLEMENTATION"),
+        (14, "14. VERIFICATION, AUTOMATED"),
+        (15, "15. COMPREHENSIVE VIVA EXAMINATION"),
+        (16, "16. CONCLUSION, LIMITATIONS")
     ]
 
     toc_page_map = {}

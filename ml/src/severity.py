@@ -72,25 +72,26 @@ def calculate_severity(
     obscene_prob = category_scores.get("obscene", 0.0)
     insult_prob = category_scores.get("insult", 0.0)
 
-    # High severity triggers: Threat or Identity Hate or Severe Toxic
-    if threat_prob >= 0.40 or identity_hate_prob >= 0.40 or severe_toxic_prob >= 0.50:
+    # High severity triggers: Threat (>= 0.10) or Identity Hate (>= 0.15) or Severe Toxic (>= 0.20)
+    # Calibrated for severe class imbalance (Threat prior is 0.30%, Identity Hate prior is 0.88%)
+    if threat_prob >= 0.10 or identity_hate_prob >= 0.15 or severe_toxic_prob >= 0.20:
         level = 3
-        if threat_prob >= 0.40:
+        if threat_prob >= 0.10:
             factors.append(f"Direct threat of violence / intimidation detected (Score: {threat_prob:.2f})")
-        if identity_hate_prob >= 0.40:
+        if identity_hate_prob >= 0.15:
             factors.append(f"Identity-based hate speech or slurs detected (Score: {identity_hate_prob:.2f})")
-        if severe_toxic_prob >= 0.50:
+        if severe_toxic_prob >= 0.20:
             factors.append(f"Extreme toxicity category triggered (Score: {severe_toxic_prob:.2f})")
 
-    # Moderate severity triggers: Multiple toxic categories or high obscenity + insult
-    elif (obscene_prob >= 0.50 and insult_prob >= 0.50) or confidence >= 0.85 or severe_toxic_prob >= 0.25:
+    # Moderate severity triggers: Obscenity, Insult, or elevated toxicity
+    elif (obscene_prob >= 0.35 and insult_prob >= 0.35) or obscene_prob >= 0.50 or insult_prob >= 0.50 or confidence >= 0.70:
         level = 2
-        if obscene_prob >= 0.50:
+        if obscene_prob >= 0.35:
             factors.append(f"Explicit obscenity detected (Score: {obscene_prob:.2f})")
-        if insult_prob >= 0.50:
+        if insult_prob >= 0.35:
             factors.append(f"Targeted insult detected (Score: {insult_prob:.2f})")
-        if confidence >= 0.85:
-            factors.append(f"High-confidence toxicity detection ({confidence * 100:.1f}%)")
+        if confidence >= 0.70:
+            factors.append(f"Elevated toxicity detection ({confidence * 100:.1f}%)")
 
     # Low severity: Single mild category or low-confidence positive
     else:

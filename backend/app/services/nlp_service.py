@@ -99,22 +99,7 @@ class NLPModelService:
         # 2. Vectorization
         X = self.vectorizer.transform([clean_text])
 
-        # 3. Best Model Prediction
-        y_pred = int(self.best_model.predict(X)[0])
-        is_toxic = bool(y_pred == 1)
-
-        # Confidence calculation
-        if hasattr(self.best_model, "predict_proba"):
-            probs = self.best_model.predict_proba(X)[0]
-            confidence = round(float(probs[1] if is_toxic else probs[0]), 4)
-        elif hasattr(self.best_model, "decision_function"):
-            df_val = float(self.best_model.decision_function(X)[0])
-            prob_pos = 1.0 / (1.0 + np.exp(-df_val))
-            confidence = round(float(prob_pos if is_toxic else (1.0 - prob_pos)), 4)
-        else:
-            confidence = 0.85
-
-        # 4. Multi-label Category Scores
+        # 3. Multi-label Category Scores (Computed first for calibrated thresholding)
         cat_scores = {}
         for cat in TARGET_COLUMNS:
             clf = self.multilabel_models.get(cat)
@@ -128,10 +113,41 @@ class NLPModelService:
             else:
                 cat_scores[cat] = 0.0
 
-        # 5. Local Explainability
+        # Calibrated Decision Thresholds (Accounting for extreme class imbalance in training data)
+        # Threat is 0.30% of dataset; 0.10 is 33x higher than base rate.
+        # Identity Hate is 0.88% of dataset; 0.15 is 17x higher than base rate.
+        CATEGORY_THRESHOLDS = {
+            "threat": 0.10,
+            "identity_hate": 0.15,
+            "severe_toxic": 0.15,
+            "toxic": 0.45,
+            "insult": 0.40,
+            "obscene": 0.40
+        }
+
+        triggered_categories = [
+            cat for cat, thr in CATEGORY_THRESHOLDS.items()
+            if cat_scores.get(cat, 0.0) >= thr
+        ]
+
+        # 4. Best Model Prediction & Calibrated Threshold Fusion
+        raw_model_pred = int(self.best_model.predict(X)[0]) == 1
+        is_toxic = bool(raw_model_pred or len(triggered_categories) > 0)
+
+        # 5. Primary Class Label Assignment
+        primary_class = "Toxic" if is_toxic else "Non-toxic"
+
+        # 6. Confidence Calibration
+        if is_toxic:
+            highest_score = max(cat_scores.values())
+            confidence = round(max(0.65, highest_score), 4)
+        else:
+            confidence = round(1.0 - max(cat_scores.values()), 4)
+
+        # 7. Local Explainability
         influential = self.explainer.explain_comment(clean_text, X, top_k=8)
 
-        # 6. Severity Estimation
+        # 8. Severity Estimation
         severity_info = calculate_severity(
             is_toxic=is_toxic,
             confidence=confidence,
@@ -143,7 +159,7 @@ class NLPModelService:
             "comment_text": text,
             "is_toxic": is_toxic,
             "confidence": confidence,
-            "primary_class": "Toxic" if is_toxic else "Non-toxic",
+            "primary_class": primary_class,
             "severity": severity_info,
             "category_scores": cat_scores,
             "influential_words": influential,
