@@ -1,5 +1,4 @@
 # Cyberbullying Detection & Severity Analysis
-### Advanced MCA NLP Major Project — Four-Member Group
 
 A complete, production-grade Natural Language Processing (NLP) and Machine Learning system for automated online toxic language detection, multi-label abuse category scoring, rule-grounded severity triage, term-level explainable AI (XAI), and human-in-the-loop moderation.
 
@@ -18,17 +17,6 @@ Online communication platforms are increasingly vulnerable to abusive language, 
 7. **SQLite Persistence & Telemetry**: Local database storage without cloud credentials or paid external APIs.
 8. **Error & Algorithmic Fairness Analysis**: Empirical diagnosis of false positives, false negatives, and demographic subgroup bias (Dixon et al. 2018).
 9. **Human Moderation Queue**: Triage interface for reviewing, approving, or escalating severe content flags.
-
----
-
-## 👥 Four-Member Group Technical Deliverables
-
-| Member | Primary Role | Key Deliverables |
-|---|---|---|
-| **Member 1** | NLP Pipeline & Dataset | Dataset discovery & validation, Stage A text cleaning, Stage B tokenization, Stage C negation-preserving stop-words, Stage D/E lemmatization & stemming, 6-stage ablation study. |
-| **Member 2** | ML Modeling & Explainability | Sublinear TF-IDF vectorization, Logistic Regression, Linear SVM (Calibrated), Naive Bayes, Multi-label category heads, additive feature attribution ($w_j \times \text{tfidf}_j$), severity rubric. |
-| **Member 3** | Backend & Database | FastAPI REST microservice, SQLite schema & indexes (`analyses`, `moderation_queue`, `user_feedback`), in-memory artifact caching, batch CSV streaming parser, moderation endpoints. |
-| **Member 4** | Frontend & System Integration | React 19 + Vite SPA, Material UI dark theme design system, Recharts visualizations, interactive NLP Laboratory, error & fairness presentation, academic documentation & presentation outline. |
 
 ---
 
