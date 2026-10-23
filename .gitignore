@@ -1,0 +1,33 @@
+# Python & Virtual Environments
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.env
+venv/
+env/
+ENV/
+
+# Testing & Pytest
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Node & Frontend
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Large dataset files (download from Kaggle Jigsaw Challenge)
+train.csv
+*.csv.zip
+*.zip
+
+# Database
+backend/app/database/*.db
+backend/app/database/*.sqlite3
+*.db
+*.sqlite3
+*.db-journal
+

@@ -1,0 +1,66 @@
+{
+  "global_false_positive_rate": 0.0039,
+  "identity_subgroups": {
+    "Sexual Orientation": {
+      "terms_tracked": [
+        "gay",
+        "lesbian",
+        "homosexual",
+        "queer"
+      ],
+      "total_matched_comments": 10,
+      "non_toxic_count": 4,
+      "false_positive_count": 1,
+      "subgroup_fpr": 0.25,
+      "fpr_disparity_ratio": 64.1
+    },
+    "Religion": {
+      "terms_tracked": [
+        "muslim",
+        "jewish",
+        "christian",
+        "islam",
+        "atheist"
+      ],
+      "total_matched_comments": 38,
+      "non_toxic_count": 35,
+      "false_positive_count": 1,
+      "subgroup_fpr": 0.0286,
+      "fpr_disparity_ratio": 7.33
+    },
+    "Race / Ethnicity": {
+      "terms_tracked": [
+        "black",
+        "white",
+        "asian",
+        "latino",
+        "hispanic"
+      ],
+      "total_matched_comments": 40,
+      "non_toxic_count": 35,
+      "false_positive_count": 0,
+      "subgroup_fpr": 0.0,
+      "fpr_disparity_ratio": 0.0
+    },
+    "Gender": {
+      "terms_tracked": [
+        "woman",
+        "man",
+        "transgender",
+        "female",
+        "male"
+      ],
+      "total_matched_comments": 46,
+      "non_toxic_count": 40,
+      "false_positive_count": 0,
+      "subgroup_fpr": 0.0,
+      "fpr_disparity_ratio": 0.0
+    }
+  },
+  "academic_assessment": "Empirical fairness analysis reveals unintended bias: models trained on uncurated internet discussions often show higher False Positive Rates on benign comments mentioning protected identity groups. This happens because toxic comments frequently pair identity words with harassment, causing linear models to assign slightly positive coefficients to demographic terms. Mitigation requires counterfactual data augmentation and human-in-the-loop moderation before punitive enforcement.",
+  "ethical_limitations": [
+    "Toxicity prediction does not measure internal intent or personal malice.",
+    "Subgroup keyword matching approximates identity discourse but cannot capture nuanced identity context.",
+    "Algorithmic filtering should never be used as the sole grounds for disciplinary action without human review."
+  ]
+}

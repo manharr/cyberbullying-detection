@@ -1,0 +1,97 @@
+{
+  "experiments": [
+    {
+      "experiment_name": "1. Basic Cleaning Only",
+      "description": "HTML, URL, mention removal and lowercasing only.",
+      "ngram_range": [
+        1,
+        1
+      ],
+      "model": "Logistic Regression (balanced)",
+      "accuracy": 0.9277,
+      "precision_macro": 0.7859,
+      "recall_macro": 0.8421,
+      "macro_f1": 0.8105,
+      "toxic_class_f1": 0.6615,
+      "training_time_seconds": 0.95
+    },
+    {
+      "experiment_name": "2. Cleaning + Stop-words Filtered",
+      "description": "Stop-words removed while preserving negation markers (not, no, never).",
+      "ngram_range": [
+        1,
+        1
+      ],
+      "model": "Logistic Regression (balanced)",
+      "accuracy": 0.937,
+      "precision_macro": 0.8163,
+      "recall_macro": 0.827,
+      "macro_f1": 0.8216,
+      "toxic_class_f1": 0.678,
+      "training_time_seconds": 0.63
+    },
+    {
+      "experiment_name": "3. Cleaning + Lemmatization",
+      "description": "WordNet lemmatization applied to retain morphological root terms.",
+      "ngram_range": [
+        1,
+        1
+      ],
+      "model": "Logistic Regression (balanced)",
+      "accuracy": 0.936,
+      "precision_macro": 0.8123,
+      "recall_macro": 0.8296,
+      "macro_f1": 0.8206,
+      "toxic_class_f1": 0.6768,
+      "training_time_seconds": 0.61
+    },
+    {
+      "experiment_name": "4. Cleaning + Porter Stemming",
+      "description": "Algorithmic suffix stripping via PorterStemmer.",
+      "ngram_range": [
+        1,
+        1
+      ],
+      "model": "Logistic Regression (balanced)",
+      "accuracy": 0.935,
+      "precision_macro": 0.807,
+      "recall_macro": 0.8399,
+      "macro_f1": 0.8223,
+      "toxic_class_f1": 0.6809,
+      "training_time_seconds": 0.59
+    },
+    {
+      "experiment_name": "5. TF-IDF Unigrams Only (1,1)",
+      "description": "Single-word vocabulary vectorization (Lemmatized base).",
+      "ngram_range": [
+        1,
+        1
+      ],
+      "model": "Logistic Regression (balanced)",
+      "accuracy": 0.936,
+      "precision_macro": 0.8123,
+      "recall_macro": 0.8296,
+      "macro_f1": 0.8206,
+      "toxic_class_f1": 0.6768,
+      "training_time_seconds": 0.62
+    },
+    {
+      "experiment_name": "6. TF-IDF Unigrams + Bigrams (1,2)",
+      "description": "Captures adjacent phrase patterns (e.g. 'not good', 'shut up').",
+      "ngram_range": [
+        1,
+        2
+      ],
+      "model": "Logistic Regression (balanced)",
+      "accuracy": 0.937,
+      "precision_macro": 0.8141,
+      "recall_macro": 0.8364,
+      "macro_f1": 0.8247,
+      "toxic_class_f1": 0.6845,
+      "training_time_seconds": 2.07
+    }
+  ],
+  "sample_size": 15000,
+  "best_configuration": "6. TF-IDF Unigrams + Bigrams (1,2)",
+  "academic_insight": "Empirical results demonstrate that combining intelligent stop-word removal with negation preservation and TF-IDF Unigrams + Bigrams provides the highest Macro F1 score, as bigrams effectively preserve critical negative and abusive phrases that single tokens miss."
+}

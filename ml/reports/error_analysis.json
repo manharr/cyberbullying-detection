@@ -1,0 +1,190 @@
+{
+  "total_test_evaluated": 2250,
+  "false_positive_count": 8,
+  "false_positive_rate": 0.0039,
+  "false_negative_count": 45,
+  "false_negative_rate": 0.2083,
+  "fp_examples": [
+    {
+      "id": "dacd7a8300bde1dc",
+      "text": "No academics go about denying homosexuality of distinguished and respectable people like this article's namesake.  The charge of homosexuality claims lays with those such as you and those you mention,...",
+      "actual_label": 0,
+      "predicted_label": 1,
+      "confidence": 0.7976,
+      "error_type": "False Positive",
+      "possible_cause": "Contains taboo words, vehement disagreement, or identity terms without abusive intent."
+    },
+    {
+      "id": "dc2a44c9387f8cfb",
+      "text": "i hate ppl thinking i'm a windbag. or shd tht be gabdniw? \n\ni give up",
+      "actual_label": 0,
+      "predicted_label": 1,
+      "confidence": 0.5435,
+      "error_type": "False Positive",
+      "possible_cause": "Contains taboo words, vehement disagreement, or identity terms without abusive intent."
+    },
+    {
+      "id": "4c943cef11f67729",
+      "text": "in life because you're an admin, whoopee",
+      "actual_label": 0,
+      "predicted_label": 1,
+      "confidence": 0.6798,
+      "error_type": "False Positive",
+      "possible_cause": "Contains taboo words, vehement disagreement, or identity terms without abusive intent."
+    },
+    {
+      "id": "4cca736d10da6f2a",
+      "text": "\"It's funny how the first people to throw around \"\"possible motives\"\" are always the ones who get it absolutely wrong. They get it so completely wrong with all their guesses it's almost as if they wer...",
+      "actual_label": 0,
+      "predicted_label": 1,
+      "confidence": 0.5841,
+      "error_type": "False Positive",
+      "possible_cause": "Contains taboo words, vehement disagreement, or identity terms without abusive intent."
+    },
+    {
+      "id": "2a4a8e6efa55ba18",
+      "text": "many more Gay Types \n\nthere are many more types of Gay as Gay bear,chubby bear,stocky bear,chubby gays.\n more c\nwww.bearwww.com\nwww.bear411.com\nwww.biggggercity.com\\chat",
+      "actual_label": 0,
+      "predicted_label": 1,
+      "confidence": 0.6649,
+      "error_type": "False Positive",
+      "possible_cause": "Contains taboo words, vehement disagreement, or identity terms without abusive intent."
+    },
+    {
+      "id": "9881a8bf0e6b81d2",
+      "text": "wikipedia \n\nwikipedia is love",
+      "actual_label": 0,
+      "predicted_label": 1,
+      "confidence": 0.5358,
+      "error_type": "False Positive",
+      "possible_cause": "Contains taboo words, vehement disagreement, or identity terms without abusive intent."
+    },
+    {
+      "id": "c458a59e8afaf660",
+      "text": "\"\nI guess we can't accommodate for people's ignorance then. '''''' Dick Laurent is dead \"",
+      "actual_label": 0,
+      "predicted_label": 1,
+      "confidence": 0.8498,
+      "error_type": "False Positive",
+      "possible_cause": "Contains taboo words, vehement disagreement, or identity terms without abusive intent."
+    },
+    {
+      "id": "12dd637b2489dfb0",
+      "text": "raja1020\nOH MY GOD!!!!!!! Can you leave me ALONE for two seconds?\nI told you that I didnt want a cyber-war on wikipedia but if thats what you want,bring it.",
+      "actual_label": 0,
+      "predicted_label": 1,
+      "confidence": 0.534,
+      "error_type": "False Positive",
+      "possible_cause": "Contains taboo words, vehement disagreement, or identity terms without abusive intent."
+    }
+  ],
+  "fn_examples": [
+    {
+      "id": "cfdd73a0f8e2be29",
+      "text": "How long did it take you to make that snippy comment? - Mister 2001:558:1400:10:DDD:F877:1CF7:CE3D",
+      "actual_label": 1,
+      "predicted_label": 0,
+      "confidence": 0.4417,
+      "error_type": "False Negative",
+      "possible_cause": "Obfuscated insults, subtle cyberbullying, sarcastic mocking, or colloquial phrasing."
+    },
+    {
+      "id": "a1e44854500056f5",
+      "text": "\"::::::::::::::::::::::::I've told you, in good faith, based on long experience (not \"\"infinite wisdom\"\"), what the problems here are. This thread began with me being able to say \"\"I told you so\"\" to ...",
+      "actual_label": 1,
+      "predicted_label": 0,
+      "confidence": 0.4687,
+      "error_type": "False Negative",
+      "possible_cause": "Obfuscated insults, subtle cyberbullying, sarcastic mocking, or colloquial phrasing."
+    },
+    {
+      "id": "68a1032786e034e5",
+      "text": "Article to be deleted\nEverything in this article is false, there is no officially named place in Afghanistan that is called Hazarajat. This article is stupid which is made by Hazara nationalists.",
+      "actual_label": 1,
+      "predicted_label": 0,
+      "confidence": 0.1224,
+      "error_type": "False Negative",
+      "possible_cause": "Obfuscated insults, subtle cyberbullying, sarcastic mocking, or colloquial phrasing."
+    },
+    {
+      "id": "b72739ed284e7e2a",
+      "text": "Materazzi is Italy's disgrace. The vistory of Italy come to nothing, it did not have any value because of Materazzi.",
+      "actual_label": 1,
+      "predicted_label": 0,
+      "confidence": 0.047,
+      "error_type": "False Negative",
+      "possible_cause": "Obfuscated insults, subtle cyberbullying, sarcastic mocking, or colloquial phrasing."
+    },
+    {
+      "id": "d7c32e7e06ea145b",
+      "text": "What is vandalism though? If I add facts/improve on pages, often some moron reverts it. IS that vandalism just because they didn't like what I wrote? Stupid.\n\nYou have to agree, Wesealthal looks like ...",
+      "actual_label": 1,
+      "predicted_label": 0,
+      "confidence": 0.3623,
+      "error_type": "False Negative",
+      "possible_cause": "Obfuscated insults, subtle cyberbullying, sarcastic mocking, or colloquial phrasing."
+    },
+    {
+      "id": "f7e23d6986c2cac7",
+      "text": "silencing dissent? \n\nWhat the hell is with you removing all my comments from Talk:September 11, 2001 attacks? Is only one side of the argument allowed to be presented there?\n\nI was only trying to sugg...",
+      "actual_label": 1,
+      "predicted_label": 0,
+      "confidence": 0.0293,
+      "error_type": "False Negative",
+      "possible_cause": "Obfuscated insults, subtle cyberbullying, sarcastic mocking, or colloquial phrasing."
+    },
+    {
+      "id": "119142fc5b552f1a",
+      "text": "Get over it, move on and let it go it's not difficult. Once you've done that leave me alone and don't talk to me again please. I called your sock puppet friend a littke Hitler not a Nazi and that wasn...",
+      "actual_label": 1,
+      "predicted_label": 0,
+      "confidence": 0.2459,
+      "error_type": "False Negative",
+      "possible_cause": "Obfuscated insults, subtle cyberbullying, sarcastic mocking, or colloquial phrasing."
+    },
+    {
+      "id": "2bec98cf5281adbf",
+      "text": "Halt! You appear to have joined Wikipedia to promote your Racist Beliefs. This is not the place for old men with high school educations to vent their rage at minorities, friend.   \n\nWikipedia is not a...",
+      "actual_label": 1,
+      "predicted_label": 0,
+      "confidence": 0.0364,
+      "error_type": "False Negative",
+      "possible_cause": "Obfuscated insults, subtle cyberbullying, sarcastic mocking, or colloquial phrasing."
+    },
+    {
+      "id": "7018f85aa5664bcd",
+      "text": "F*CKING SON OF A BATCH MOTHER F*CKER.  Rolling on th floor eating a bagel is real, and you're a denier!!!",
+      "actual_label": 1,
+      "predicted_label": 0,
+      "confidence": 0.2572,
+      "error_type": "False Negative",
+      "possible_cause": "Obfuscated insults, subtle cyberbullying, sarcastic mocking, or colloquial phrasing."
+    },
+    {
+      "id": "8dfd75457ba3f676",
+      "text": "SSSSSSSSSSSSShhhhhhhh \n\nGo away. Don't use my suerpage again for any reason or you will regret it.",
+      "actual_label": 1,
+      "predicted_label": 0,
+      "confidence": 0.4886,
+      "error_type": "False Negative",
+      "possible_cause": "Obfuscated insults, subtle cyberbullying, sarcastic mocking, or colloquial phrasing."
+    }
+  ],
+  "failure_modes": [
+    {
+      "pattern": "Negation Inversion",
+      "description": "Sentences like 'I do not want to insult you' may be misflagged due to presence of the root word 'insult'.",
+      "mitigation": "Preserving negation words during stop-word removal and utilizing unigram+bigram TF-IDF features."
+    },
+    {
+      "pattern": "Sarcasm & Subtle Bullying",
+      "description": "Passive-aggressive bullying without overt profanity or slurs is frequently missed by bag-of-words classifiers.",
+      "mitigation": "Requires contextual transformer representations (e.g. DistilBERT) or conversational thread history."
+    },
+    {
+      "pattern": "Colloquial Reappropriation",
+      "description": "Friendly banter or reclamation of reclaimed terms among close peers is misclassified as toxic.",
+      "mitigation": "Incorporating user moderation queue review before taking punitive actions."
+    }
+  ]
+}
