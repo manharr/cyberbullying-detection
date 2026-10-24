@@ -14,7 +14,6 @@ export default function Overview({ onNavigate }) {
   const kpis = [
     { label: 'Dataset Records', value: '159.5k', sub: 'Jigsaw Challenge' },
     { label: 'Champion Classifier', value: 'Linear SVM', sub: 'Calibrated Platt Scaling' },
-    { label: 'Validation Macro F1', value: '0.8392', sub: 'Balanced Weighting' },
     { label: 'Inference Latency', value: '< 10 ms', sub: 'Single-thread CPU' },
   ];
 
@@ -80,7 +79,7 @@ export default function Overview({ onNavigate }) {
         {/* KPI Strip */}
         <Grid container spacing={2} sx={{ mt: 2 }}>
           {kpis.map((k, i) => (
-            <Grid item xs={6} md={3} key={i}>
+            <Grid item xs={12} sm={4} md={4} key={i}>
               <Box sx={{ p: 1.5, borderRadius: '8px', background: 'rgba(255, 255, 255, 0.02)', border: '1px solid var(--border-subtle)' }}>
                 <Typography variant="caption" sx={{ color: 'var(--text-muted)', fontWeight: 600, display: 'block', textTransform: 'uppercase', fontSize: '0.68rem' }}>
                   {k.label}

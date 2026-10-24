@@ -1,0 +1,11 @@
+id,comment_text,expected_category
+1,"Thank you so much for this detailed explanation, it really helped our project team!",Constructive
+2,"I respectfully disagree with your findings, but your citations are well documented.",Neutral Debate
+3,"Great presentation today, looking forward to the next workshop.",Compliment
+4,"Can anyone explain how the TF-IDF formula handles stop words?",Question
+5,"Shut up you absolute idiot, you have no idea what you are talking about.",Insult
+6,"You are disgusting and pathetic, nobody wants you here.",Harassment
+7,"Stop posting this garbage, you are completely stupid and useless.",Toxicity
+8,"I will track you down and hurt you, watch your back.",Threat
+9,"All people belonging to that group are evil animals and should be eradicated.",Hate Speech
+10,"Get lost you stupid clown, go cry somewhere else.",Hostile
