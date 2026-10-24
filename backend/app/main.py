@@ -25,6 +25,7 @@ from backend.app.schemas.analysis import (
     ModerationUpdateRequest, FeedbackRequest, NlpLabRequest
 )
 from backend.app.services.nlp_service import nlp_service
+from backend.app.services.distilbert_service import distilbert_service
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
@@ -62,13 +63,26 @@ def health_check():
 @app.post("/api/analyze", response_model=AnalyzeResponse)
 def analyze_single_comment(req: AnalyzeRequest):
     """Analyzes a single comment for cyberbullying toxicity, category scores, severity, and explanations."""
-    if not nlp_service.is_loaded:
-        raise HTTPException(
-            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail="NLP model artifacts not loaded. Please train models first using `python ml/src/train.py`."
-        )
+    model_choice = (req.model or "linear_svm").lower().strip()
 
-    prediction = nlp_service.predict_comment(req.comment_text)
+    if model_choice in ["distilbert", "transformer", "bert"]:
+        if not distilbert_service.is_available:
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail="DistilBERT model artifacts not found. Run benchmark_distilbert.py or select default Linear SVM."
+            )
+        prediction = distilbert_service.predict_comment(
+            comment_text=req.comment_text,
+            threshold=req.threshold,
+            nlp_fallback_service=nlp_service if nlp_service.is_loaded else None
+        )
+    else:
+        if not nlp_service.is_loaded:
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail="NLP model artifacts not loaded. Please train models first using `python ml/src/train.py`."
+            )
+        prediction = nlp_service.predict_comment(req.comment_text)
 
     # Persist in SQLite database if requested
     saved_id = None
@@ -276,6 +290,12 @@ def get_model_comparison():
         "model_comparison": models_data,
         "preprocessing_experiments": preproc_data
     }
+
+
+@app.get("/api/model/threshold-tuning")
+def get_threshold_tuning():
+    """Returns toxicity threshold tuning grid search results and curves for DistilBERT."""
+    return distilbert_service.get_threshold_tuning_data()
 
 
 @app.get("/api/explain/global")

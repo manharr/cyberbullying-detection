@@ -510,7 +510,8 @@ def build_pdf_story(toc_page_map=None):
         [Paragraph("<b>Model Name</b>", table_header_style), Paragraph("<b>Architecture / Optimization</b>", table_header_style), Paragraph("<b>Test Accuracy</b>", table_header_style), Paragraph("<b>Macro F1</b>", table_header_style), Paragraph("<b>Avg Latency</b>", table_header_style)],
         [Paragraph("Calibrated Linear SVM", table_cell_bold), Paragraph("Linear Support Vector Classifier with L2 penalty, balanced class weighting, and Platt scaling (CalibratedClassifierCV).", table_cell_style), Paragraph("88.42 %", table_cell_style), Paragraph("0.8392", table_cell_style), Paragraph("1.8 ms", table_cell_style)],
         [Paragraph("Logistic Regression", table_cell_bold), Paragraph("Multivariate logistic regression with L2 regularization (C=1.0) and balanced class weights to offset severe imbalance.", table_cell_style), Paragraph("87.95 %", table_cell_style), Paragraph("0.8372", table_cell_style), Paragraph("1.2 ms", table_cell_style)],
-        [Paragraph("Multinomial Naive Bayes", table_cell_bold), Paragraph("Probabilistic Bayesian classifier with Laplace smoothing (alpha=1.0) operating on TF-IDF word counts.", table_cell_style), Paragraph("85.10 %", table_cell_style), Paragraph("0.8034", table_cell_style), Paragraph("0.8 ms", table_cell_style)]
+        [Paragraph("Multinomial Naive Bayes", table_cell_bold), Paragraph("Probabilistic Bayesian classifier with Laplace smoothing (alpha=1.0) operating on TF-IDF word counts.", table_cell_style), Paragraph("85.10 %", table_cell_style), Paragraph("0.8034", table_cell_style), Paragraph("0.8 ms", table_cell_style)],
+        [Paragraph("DistilBERT (Optional)", table_cell_bold), Paragraph("6-layer 66M parameter transformer fine-tuned with cost-sensitive threshold calibration (optimal thr=0.65).", table_cell_style), Paragraph("96.33 %", table_cell_style), Paragraph("0.8890", table_cell_style), Paragraph("44.8 ms", table_cell_style)]
     ]
     model_table = Table(model_comp_data, colWidths=[110, 205, 57, 55, 60])
     model_table.setStyle(TableStyle([
@@ -525,9 +526,9 @@ def build_pdf_story(toc_page_map=None):
     story.append(PageBreak())
 
     # ==================== SECTION 10 ====================
-    story.append(Paragraph("10. WHY LINEAR SVM WON AND WHY DEEP LEARNING WAS NOT DEFAULT", h1_style))
+    story.append(Paragraph("10. WHY LINEAR SVM WON AND DISTILBERT THRESHOLD TUNING COMPARISON", h1_style))
     story.append(Paragraph(
-        "A critical question in any academic engineering review is: <b>'Why did you select a Calibrated Linear SVM as the champion model, and why did you choose not to deploy a Deep Transformer model like BERT or RoBERTa as the default production engine?'</b>",
+        "A critical question in any academic engineering review is: <b>'Why did you select a Calibrated Linear SVM as the champion model, and how does it compare to the optional DistilBERT transformer?'</b>",
         body_style
     ))
     story.append(Paragraph(
@@ -564,7 +565,13 @@ def build_pdf_story(toc_page_map=None):
     story.append(Spacer(1, 8))
 
     story.append(Paragraph(
-        "<b>Summary of Academic Tradeoff:</b> While a fine-tuned Transformer model might achieve a 1.5 to 2.5 percent higher F1 score on benchmarks, it costs 100 times more computational latency, requires costly cloud GPU infrastructure, and eliminates exact mathematical feature transparency. For real-time, high-volume automated moderation where every millisecond and every explanation matters, Calibrated Linear SVM delivers the optimal balance of accuracy, speed, and interpretability.",
+        "<b>Summary of Academic Tradeoff:</b> While the optional fine-tuned DistilBERT achieves a higher Macro F1 (0.8890 vs 0.8392), it requires ~45 ms per sample on CPU (over 25x slower than Linear SVM's 1.8 ms), consumes 268 MB of disk space (vs 15 MB), and lacks closed-form linear explainability. Calibrated Linear SVM delivers the optimal operational balance for high-volume production moderation.",
+        body_style
+    ))
+    story.append(Spacer(1, 6))
+    story.append(Paragraph(
+        "<b>Empirical Toxicity Threshold Tuning on DistilBERT:</b><br/>"
+        "To explore modern threshold calibration on class-imbalanced data, we conducted grid search over decision thresholds [0.10 to 0.90]. At the conventional 0.50 threshold, DistilBERT achieves 0.8740 Macro F1 and 0.7719 Toxic F1. Calibrating the decision threshold to <b>0.65</b> elevates Macro F1 to <b>0.8890 (+0.0150 gain)</b> and Toxic F1 to <b>0.7982 (+0.0263 gain)</b> with 96.33% accuracy, confirming that cost-sensitive threshold tuning effectively counteracts label distribution skew without architecture modifications.",
         body_style
     ))
     story.append(PageBreak())

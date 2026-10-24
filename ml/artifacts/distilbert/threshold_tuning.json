@@ -1,0 +1,198 @@
+{
+  "target_metric": "f1_macro",
+  "optimal_threshold": 0.65,
+  "optimal_metrics": {
+    "threshold": 0.65,
+    "accuracy": 0.9633,
+    "precision_macro": 0.899,
+    "recall_macro": 0.8797,
+    "f1_macro": 0.889,
+    "toxic_precision": 0.8208,
+    "toxic_recall": 0.7768,
+    "toxic_f1": 0.7982
+  },
+  "default_metrics_at_0_50": {
+    "threshold": 0.5,
+    "accuracy": 0.9567,
+    "precision_macro": 0.8682,
+    "recall_macro": 0.88,
+    "f1_macro": 0.874,
+    "toxic_precision": 0.7586,
+    "toxic_recall": 0.7857,
+    "toxic_f1": 0.7719
+  },
+  "f1_gain": 0.015,
+  "toxic_recall_gain": -0.0089,
+  "threshold_curve": [
+    {
+      "threshold": 0.1,
+      "accuracy": 0.9292,
+      "precision_macro": 0.7832,
+      "recall_macro": 0.8929,
+      "f1_macro": 0.8255,
+      "toxic_precision": 0.5828,
+      "toxic_recall": 0.8482,
+      "toxic_f1": 0.6909
+    },
+    {
+      "threshold": 0.15,
+      "accuracy": 0.9375,
+      "precision_macro": 0.8023,
+      "recall_macro": 0.8975,
+      "f1_macro": 0.8409,
+      "toxic_precision": 0.6209,
+      "toxic_recall": 0.8482,
+      "toxic_f1": 0.717
+    },
+    {
+      "threshold": 0.2,
+      "accuracy": 0.9433,
+      "precision_macro": 0.8185,
+      "recall_macro": 0.8927,
+      "f1_macro": 0.8503,
+      "toxic_precision": 0.6549,
+      "toxic_recall": 0.8304,
+      "toxic_f1": 0.7323
+    },
+    {
+      "threshold": 0.25,
+      "accuracy": 0.9475,
+      "precision_macro": 0.8305,
+      "recall_macro": 0.895,
+      "f1_macro": 0.8588,
+      "toxic_precision": 0.6788,
+      "toxic_recall": 0.8304,
+      "toxic_f1": 0.747
+    },
+    {
+      "threshold": 0.3,
+      "accuracy": 0.9508,
+      "precision_macro": 0.8429,
+      "recall_macro": 0.8888,
+      "f1_macro": 0.8639,
+      "toxic_precision": 0.7054,
+      "toxic_recall": 0.8125,
+      "toxic_f1": 0.7552
+    },
+    {
+      "threshold": 0.35,
+      "accuracy": 0.9533,
+      "precision_macro": 0.8513,
+      "recall_macro": 0.8902,
+      "f1_macro": 0.8694,
+      "toxic_precision": 0.7222,
+      "toxic_recall": 0.8125,
+      "toxic_f1": 0.7647
+    },
+    {
+      "threshold": 0.4,
+      "accuracy": 0.9525,
+      "precision_macro": 0.8511,
+      "recall_macro": 0.8817,
+      "f1_macro": 0.8656,
+      "toxic_precision": 0.7236,
+      "toxic_recall": 0.7946,
+      "toxic_f1": 0.7574
+    },
+    {
+      "threshold": 0.45,
+      "accuracy": 0.955,
+      "precision_macro": 0.8618,
+      "recall_macro": 0.8791,
+      "f1_macro": 0.8702,
+      "toxic_precision": 0.7458,
+      "toxic_recall": 0.7857,
+      "toxic_f1": 0.7652
+    },
+    {
+      "threshold": 0.5,
+      "accuracy": 0.9567,
+      "precision_macro": 0.8682,
+      "recall_macro": 0.88,
+      "f1_macro": 0.874,
+      "toxic_precision": 0.7586,
+      "toxic_recall": 0.7857,
+      "toxic_f1": 0.7719
+    },
+    {
+      "threshold": 0.55,
+      "accuracy": 0.96,
+      "precision_macro": 0.8818,
+      "recall_macro": 0.8818,
+      "f1_macro": 0.8818,
+      "toxic_precision": 0.7857,
+      "toxic_recall": 0.7857,
+      "toxic_f1": 0.7857
+    },
+    {
+      "threshold": 0.6,
+      "accuracy": 0.9625,
+      "precision_macro": 0.8927,
+      "recall_macro": 0.8832,
+      "f1_macro": 0.8879,
+      "toxic_precision": 0.8073,
+      "toxic_recall": 0.7857,
+      "toxic_f1": 0.7964
+    },
+    {
+      "threshold": 0.65,
+      "accuracy": 0.9633,
+      "precision_macro": 0.899,
+      "recall_macro": 0.8797,
+      "f1_macro": 0.889,
+      "toxic_precision": 0.8208,
+      "toxic_recall": 0.7768,
+      "toxic_f1": 0.7982
+    },
+    {
+      "threshold": 0.7,
+      "accuracy": 0.9625,
+      "precision_macro": 0.9031,
+      "recall_macro": 0.8672,
+      "f1_macro": 0.8841,
+      "toxic_precision": 0.8317,
+      "toxic_recall": 0.75,
+      "toxic_f1": 0.7887
+    },
+    {
+      "threshold": 0.75,
+      "accuracy": 0.9608,
+      "precision_macro": 0.9035,
+      "recall_macro": 0.8543,
+      "f1_macro": 0.8768,
+      "toxic_precision": 0.8351,
+      "toxic_recall": 0.7232,
+      "toxic_f1": 0.7751
+    },
+    {
+      "threshold": 0.8,
+      "accuracy": 0.9592,
+      "precision_macro": 0.9009,
+      "recall_macro": 0.8453,
+      "f1_macro": 0.8705,
+      "toxic_precision": 0.8316,
+      "toxic_recall": 0.7054,
+      "toxic_f1": 0.7633
+    },
+    {
+      "threshold": 0.85,
+      "accuracy": 0.9558,
+      "precision_macro": 0.8954,
+      "recall_macro": 0.8275,
+      "f1_macro": 0.8574,
+      "toxic_precision": 0.8242,
+      "toxic_recall": 0.6696,
+      "toxic_f1": 0.7389
+    },
+    {
+      "threshold": 0.9,
+      "accuracy": 0.9542,
+      "precision_macro": 0.8993,
+      "recall_macro": 0.8105,
+      "f1_macro": 0.8479,
+      "toxic_precision": 0.8353,
+      "toxic_recall": 0.6339,
+      "toxic_f1": 0.7208
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "model_type": "DistilBERT",
+  "base_model": "distilbert-base-uncased",
+  "default_threshold": 0.65,
+  "saved_at": "2026-10-24 09:09:55"
+}

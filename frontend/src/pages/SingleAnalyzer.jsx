@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
   Box, Typography, TextField, Button, Grid,
   LinearProgress, Chip, Alert, CircularProgress,
-  IconButton, Tooltip, Divider, Stack
+  IconButton, Tooltip, Divider, Stack, Slider
 } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
@@ -10,6 +10,9 @@ import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 import ErrorOutlinedIcon from '@mui/icons-material/ErrorOutlined';
+import BoltOutlinedIcon from '@mui/icons-material/BoltOutlined';
+import MemoryOutlinedIcon from '@mui/icons-material/MemoryOutlined';
+import TuneIcon from '@mui/icons-material/Tune';
 
 import SeverityBadge from '../components/SeverityBadge';
 import { analyzeComment, submitFeedback } from '../api/client';
@@ -28,6 +31,8 @@ export default function SingleAnalyzer() {
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
   const [feedbackSent, setFeedbackSent] = useState(false);
+  const [selectedModel, setSelectedModel] = useState('linear_svm');
+  const [threshold, setThreshold] = useState(0.65);
 
   const handleAnalyze = async () => {
     if (!commentText.trim()) return;
@@ -36,7 +41,12 @@ export default function SingleAnalyzer() {
     setFeedbackSent(false);
 
     try {
-      const data = await analyzeComment(commentText, true);
+      const data = await analyzeComment(
+        commentText,
+        true,
+        selectedModel,
+        selectedModel === 'distilbert' ? threshold : null
+      );
       setResult(data);
     } catch (err) {
       setError(err.response?.data?.detail || 'Analysis service offline.');
@@ -161,6 +171,71 @@ export default function SingleAnalyzer() {
             </Button>
           </Stack>
         </Box>
+
+        {/* Model Selection & Threshold Tuning Controls */}
+        <Divider sx={{ my: 1.5, borderColor: 'var(--border-subtle)' }} />
+        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, gap: 1.5 }}>
+          <Stack direction="row" spacing={1} alignItems="center">
+            <Typography variant="caption" sx={{ color: 'var(--text-muted)', fontWeight: 600 }}>
+              Model:
+            </Typography>
+            <Chip
+              icon={<BoltOutlinedIcon sx={{ fontSize: '15px !important' }} />}
+              label="Linear SVM (Champion)"
+              size="small"
+              clickable
+              onClick={() => setSelectedModel('linear_svm')}
+              sx={{
+                fontSize: '0.74rem',
+                fontWeight: selectedModel === 'linear_svm' ? 700 : 500,
+                background: selectedModel === 'linear_svm' ? 'rgba(99, 102, 241, 0.2)' : 'rgba(255, 255, 255, 0.02)',
+                color: selectedModel === 'linear_svm' ? '#818cf8' : 'var(--text-secondary)',
+                border: selectedModel === 'linear_svm' ? '1px solid #6366f1' : '1px solid var(--border-subtle)',
+              }}
+            />
+            <Chip
+              icon={<MemoryOutlinedIcon sx={{ fontSize: '15px !important' }} />}
+              label="DistilBERT (Optional)"
+              size="small"
+              clickable
+              onClick={() => setSelectedModel('distilbert')}
+              sx={{
+                fontSize: '0.74rem',
+                fontWeight: selectedModel === 'distilbert' ? 700 : 500,
+                background: selectedModel === 'distilbert' ? 'rgba(168, 85, 247, 0.2)' : 'rgba(255, 255, 255, 0.02)',
+                color: selectedModel === 'distilbert' ? '#c084fc' : 'var(--text-secondary)',
+                border: selectedModel === 'distilbert' ? '1px solid #a855f7' : '1px solid var(--border-subtle)',
+              }}
+            />
+          </Stack>
+
+          {selectedModel === 'distilbert' && (
+            <Box sx={{ width: { xs: '100%', sm: 260 }, px: 1 }}>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 0.2 }}>
+                <Typography variant="caption" sx={{ color: 'var(--text-muted)', fontSize: '0.7rem', display: 'flex', alignItems: 'center', gap: 0.4 }}>
+                  <TuneIcon sx={{ fontSize: 13 }} /> Toxicity Threshold:
+                </Typography>
+                <Typography variant="caption" sx={{ color: '#c084fc', fontWeight: 700, fontFamily: 'monospace' }}>
+                  {threshold.toFixed(2)} {threshold === 0.65 ? '(Optimal)' : threshold === 0.50 ? '(Default)' : ''}
+                </Typography>
+              </Box>
+              <Slider
+                size="small"
+                value={threshold}
+                min={0.10}
+                max={0.90}
+                step={0.05}
+                onChange={(_, val) => setThreshold(val)}
+                sx={{
+                  color: '#a855f7',
+                  py: 0.5,
+                  '& .MuiSlider-thumb': { width: 12, height: 12 },
+                  '& .MuiSlider-rail': { opacity: 0.3 }
+                }}
+              />
+            </Box>
+          )}
+        </Box>
       </Box>
 
       {error && <Alert severity="error" sx={{ mb: 2, py: 0.5, borderRadius: '8px' }}>{error}</Alert>}
@@ -200,6 +275,22 @@ export default function SingleAnalyzer() {
                   <Typography variant="caption" sx={{ color: 'var(--text-secondary)' }}>
                     Confidence: <strong>{(result.confidence * 100).toFixed(1)}%</strong>
                   </Typography>
+                  {result.model_used && (
+                    <Box sx={{ mt: 0.5, display: 'flex', gap: 0.5, flexWrap: 'wrap' }}>
+                      <Chip
+                        label={result.model_used}
+                        size="small"
+                        sx={{ height: 18, fontSize: '0.65rem', background: 'rgba(255, 255, 255, 0.05)', color: '#a1a1aa' }}
+                      />
+                      {result.inference_latency_ms !== undefined && (
+                        <Chip
+                          label={`${result.inference_latency_ms} ms`}
+                          size="small"
+                          sx={{ height: 18, fontSize: '0.65rem', background: 'rgba(99, 102, 241, 0.1)', color: '#818cf8', fontFamily: 'monospace' }}
+                        />
+                      )}
+                    </Box>
+                  )}
                 </Box>
               </Box>
 

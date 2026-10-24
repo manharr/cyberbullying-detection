@@ -89,7 +89,22 @@ export default function ModelComparison() {
                     }}
                   >
                     <TableCell sx={{ fontWeight: isSelected ? 700 : 500 }}>
-                      {name}
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.8, flexWrap: 'wrap' }}>
+                        <span>{name}</span>
+                        {m.is_optional && (
+                          <Chip
+                            label="Optional Transformer"
+                            size="small"
+                            sx={{
+                              fontSize: '0.65rem',
+                              height: 18,
+                              background: 'rgba(168, 85, 247, 0.15)',
+                              color: '#c084fc',
+                              border: '1px solid rgba(168, 85, 247, 0.3)'
+                            }}
+                          />
+                        )}
+                      </Box>
                     </TableCell>
                     <TableCell align="center">{(m.accuracy * 100).toFixed(1)}%</TableCell>
                     <TableCell align="center">{(m.precision_macro * 100).toFixed(1)}%</TableCell>
@@ -101,7 +116,7 @@ export default function ModelComparison() {
                       {m.class_1_toxic?.f1?.toFixed(4)}
                     </TableCell>
                     <TableCell align="center" sx={{ fontFamily: 'monospace', color: 'var(--text-muted)' }}>
-                      {m.training_time_seconds}s
+                      {m.per_sample_latency_ms ? `${m.per_sample_latency_ms.toFixed(1)}ms` : `${m.training_time_seconds}s`}
                     </TableCell>
                   </TableRow>
                 );
@@ -110,6 +125,116 @@ export default function ModelComparison() {
           </Table>
         </TableContainer>
       </Box>
+
+      {/* Threshold Tuning Section */}
+      {data?.model_comparison?.threshold_tuning && (
+        <Box className="glass-panel" sx={{ p: 2, mb: 3 }}>
+          <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, gap: 1, mb: 1.5 }}>
+            <Box>
+              <Typography variant="caption" sx={{ color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                <TuneIcon sx={{ fontSize: 14 }} /> DistilBERT Cost-Sensitive Threshold Tuning
+              </Typography>
+              <Typography variant="body2" sx={{ color: 'var(--text-secondary)', fontSize: '0.8rem', mt: 0.2 }}>
+                Calibrating decision thresholds on validation data balances precision and toxic recall on class-imbalanced corpora.
+              </Typography>
+            </Box>
+            <Chip
+              label={`Optimal Threshold: ${data.model_comparison.threshold_tuning.optimal_threshold}`}
+              size="small"
+              sx={{ background: 'rgba(168, 85, 247, 0.2)', color: '#c084fc', fontWeight: 700, fontSize: '0.74rem' }}
+            />
+          </Box>
+
+          {/* Metric Gain Summary Cards */}
+          <Grid container spacing={2} sx={{ mb: 2 }}>
+            <Grid item xs={12} sm={4}>
+              <Box sx={{ p: 1.2, borderRadius: '6px', background: 'rgba(255, 255, 255, 0.02)', border: '1px solid var(--border-subtle)' }}>
+                <Typography variant="caption" sx={{ color: 'var(--text-muted)' }}>MACRO F1 (DEFAULT 0.50 vs OPTIMAL {data.model_comparison.threshold_tuning.optimal_threshold})</Typography>
+                <Stack direction="row" spacing={1} alignItems="baseline" sx={{ mt: 0.3 }}>
+                  <Typography variant="h6" sx={{ fontWeight: 800, color: '#c084fc' }}>
+                    {data.model_comparison.threshold_tuning.f1_macro_optimal.toFixed(4)}
+                  </Typography>
+                  <Typography variant="caption" sx={{ color: '#10b981', fontWeight: 600 }}>
+                    (+{(data.model_comparison.threshold_tuning.f1_macro_optimal - data.model_comparison.threshold_tuning.f1_macro_default).toFixed(4)})
+                  </Typography>
+                  <Typography variant="caption" sx={{ color: 'var(--text-muted)' }}>
+                    from {data.model_comparison.threshold_tuning.f1_macro_default.toFixed(4)}
+                  </Typography>
+                </Stack>
+              </Box>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <Box sx={{ p: 1.2, borderRadius: '6px', background: 'rgba(255, 255, 255, 0.02)', border: '1px solid var(--border-subtle)' }}>
+                <Typography variant="caption" sx={{ color: 'var(--text-muted)' }}>TOXIC CLASS F1 (F1-SCORE)</Typography>
+                <Stack direction="row" spacing={1} alignItems="baseline" sx={{ mt: 0.3 }}>
+                  <Typography variant="h6" sx={{ fontWeight: 800, color: '#f43f5e' }}>
+                    {data.model_comparison.threshold_tuning.toxic_f1_optimal.toFixed(4)}
+                  </Typography>
+                  <Typography variant="caption" sx={{ color: '#10b981', fontWeight: 600 }}>
+                    (+{(data.model_comparison.threshold_tuning.toxic_f1_optimal - data.model_comparison.threshold_tuning.toxic_f1_default).toFixed(4)})
+                  </Typography>
+                  <Typography variant="caption" sx={{ color: 'var(--text-muted)' }}>
+                    from {data.model_comparison.threshold_tuning.toxic_f1_default.toFixed(4)}
+                  </Typography>
+                </Stack>
+              </Box>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <Box sx={{ p: 1.2, borderRadius: '6px', background: 'rgba(255, 255, 255, 0.02)', border: '1px solid var(--border-subtle)' }}>
+                <Typography variant="caption" sx={{ color: 'var(--text-muted)' }}>ARCHITECTURAL RATIONALE</Typography>
+                <Typography variant="caption" sx={{ display: 'block', color: 'var(--text-secondary)', fontSize: '0.72rem', mt: 0.4 }}>
+                  Linear SVM is retained as production champion for &lt;2ms CPU latency and closed-form XAI. DistilBERT provides deep contextual representations with threshold tuning.
+                </Typography>
+              </Box>
+            </Grid>
+          </Grid>
+
+          {/* Threshold Tuning Curve Table */}
+          {data.model_comparison.threshold_tuning.curve_samples && (
+            <TableContainer component={Paper} sx={{ backgroundColor: 'transparent', boxShadow: 'none' }}>
+              <Table size="small">
+                <TableHead>
+                  <TableRow sx={{ '& th': { color: 'var(--text-secondary)', fontWeight: 600, fontSize: '0.72rem', borderColor: 'var(--border-subtle)' } }}>
+                    <TableCell>Decision Threshold</TableCell>
+                    <TableCell align="center">Accuracy</TableCell>
+                    <TableCell align="center">Toxic Precision</TableCell>
+                    <TableCell align="center">Toxic Recall</TableCell>
+                    <TableCell align="center">Toxic F1</TableCell>
+                    <TableCell align="center">Macro F1</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {data.model_comparison.threshold_tuning.curve_samples.filter((_, idx) => idx % 2 === 0 || idx === data.model_comparison.threshold_tuning.curve_samples.length - 1).map((sample, idx) => {
+                    const isOptimal = Math.abs(sample.threshold - data.model_comparison.threshold_tuning.optimal_threshold) < 0.01;
+                    return (
+                      <TableRow
+                        key={idx}
+                        sx={{
+                          backgroundColor: isOptimal ? 'rgba(168, 85, 247, 0.1)' : 'transparent',
+                          '& td': { color: '#e4e4e7', fontSize: '0.78rem', borderColor: 'var(--border-subtle)' }
+                        }}
+                      >
+                        <TableCell sx={{ fontWeight: isOptimal ? 800 : 500, color: isOptimal ? '#c084fc' : '#e4e4e7' }}>
+                          {sample.threshold.toFixed(2)} {isOptimal ? '★ (Optimal F1)' : sample.threshold === 0.50 ? '(Default)' : ''}
+                        </TableCell>
+                        <TableCell align="center">{(sample.accuracy * 100).toFixed(1)}%</TableCell>
+                        <TableCell align="center">{(sample.toxic_precision * 100).toFixed(1)}%</TableCell>
+                        <TableCell align="center">{(sample.toxic_recall * 100).toFixed(1)}%</TableCell>
+                        <TableCell align="center" sx={{ color: '#f43f5e', fontWeight: isOptimal ? 700 : 500 }}>
+                          {sample.toxic_f1.toFixed(4)}
+                        </TableCell>
+                        <TableCell align="center" sx={{ color: isOptimal ? '#c084fc' : '#818cf8', fontWeight: isOptimal ? 800 : 600 }}>
+                          {sample.f1_macro.toFixed(4)}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          )}
+        </Box>
+      )}
 
       {/* Held-Out Confusion Matrix */}
       {testEval && (

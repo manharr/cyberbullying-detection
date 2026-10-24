@@ -9,6 +9,8 @@ from pydantic import BaseModel, Field
 class AnalyzeRequest(BaseModel):
     comment_text: str = Field(..., min_length=1, max_length=5000, description="The comment text to classify")
     auto_save: bool = Field(default=True, description="Whether to persist analysis to database")
+    model: Optional[str] = Field(default="linear_svm", description="Classifier selection: 'linear_svm' (default) or 'distilbert'")
+    threshold: Optional[float] = Field(default=None, ge=0.0, le=1.0, description="Optional custom toxicity decision threshold")
 
 
 class InfluentialWord(BaseModel):
@@ -40,6 +42,9 @@ class AnalyzeResponse(BaseModel):
     influential_words: List[InfluentialWord]
     academic_disclaimer: str
     created_at: Optional[str] = None
+    model_used: Optional[str] = Field(default="Linear SVM (Champion)", description="Model used for prediction")
+    applied_threshold: Optional[float] = Field(default=None, description="Applied decision threshold")
+    inference_latency_ms: Optional[float] = Field(default=None, description="Inference latency in ms")
 
 
 class BatchAnalyzeItem(BaseModel):

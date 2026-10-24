@@ -9,8 +9,16 @@ const api = axios.create({
 
 export const checkHealth = () => api.get('/health').then(r => r.data);
 
-export const analyzeComment = (commentText, autoSave = true) =>
-  api.post('/api/analyze', { comment_text: commentText, auto_save: autoSave }).then(r => r.data);
+export const analyzeComment = (commentText, autoSave = true, model = 'linear_svm', threshold = null) => {
+  const payload = { comment_text: commentText, auto_save: autoSave, model };
+  if (threshold !== null && threshold !== undefined) {
+    payload.threshold = threshold;
+  }
+  return api.post('/api/analyze', payload).then(r => r.data);
+};
+
+export const getThresholdTuning = () =>
+  api.get('/api/model/threshold-tuning').then(r => r.data);
 
 export const analyzeBatchCSV = (formData, textColumn = 'comment_text') =>
   api.post(`/api/analyze/batch?text_column=${encodeURIComponent(textColumn)}`, formData, {

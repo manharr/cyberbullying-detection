@@ -31,3 +31,10 @@ backend/app/database/*.sqlite3
 *.sqlite3
 *.db-journal
 
+# Project Backups
+backup_pre_distilbert/
+
+# Transformer large weights (>100MB, generate via benchmark_distilbert.py)
+*.safetensors
+*.bin
+*.pt
